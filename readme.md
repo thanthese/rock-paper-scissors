@@ -1,4 +1,4 @@
-*Challenge*: is it possible to write a bot that can consistently beat random at
+**Challenge**: is it possible to write a bot that can consistently beat random at
 rock-paper-scissors?
 
 Obviously, with pure random the answer is no -- and worse, *any* strategy up
@@ -10,7 +10,7 @@ emerge that can be abused.
 Here's a simple implementation I was playing with.  Initial conclusion:
 computer random is random enough.
 
-*Sample output*:
+**Sample output**:
 
     Left Wins!  Spread: 89.   Runs: 10000.   Totals: left: 3378, right: 3289, tie: 3333
     Left Wins!  Spread: 160.   Runs: 10000.   Totals: left: 3388, right: 3228, tie: 3384
@@ -24,7 +24,7 @@ computer random is random enough.
     Right Wins!  Spread: -73.   Runs: 10000.   Totals: left: 3294, right: 3367, tie: 3339
     "Elapsed time: 45301.682063 msecs"
 
-*Additional notes*:
+**Additional notes**:
 
 - This program is grossly inefficient in that the histogram-strategy
   calculates the frequencies each time.
