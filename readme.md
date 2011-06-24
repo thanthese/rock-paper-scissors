@@ -1,4 +1,4 @@
-**Challenge**: is it possible to write a bot that can consistently beat random at
+**Challenge**: Is it possible to write a bot that can consistently beat random at
 rock-paper-scissors?
 
 Obviously, with pure random the answer is no -- and worse, *any* strategy up
@@ -7,8 +7,9 @@ against random becomes a random strategy itself.
 But.  Computers are not random, and over millions of throws maybe a bias will
 emerge that can be abused.
 
-Here's a simple implementation I was playing with.  Initial conclusion:
-computer random is random enough.
+Here's a simple implementation I was playing with.
+
+**Initial conclusion**: Computer random is random enough.
 
 **Sample output**:
 
@@ -34,5 +35,5 @@ computer random is random enough.
 
 - random-strategy tends to favor one throw by 0.1% each round.
 
-- To run program: java -server -jar ~/clojure-1.2.0/clojure.jar i-rock.clj
+- To run program: `java -server -jar ~/clojure-1.2.0/clojure.jar i-rock.clj`
 
