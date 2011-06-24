@@ -1,32 +1,47 @@
+(ns i-rock)
+
 (defn moderate [player-a player-b run-count]
-  (loop [runs-left run-count
-         history []]
-    (if (= 0 runs-left)
-      history
-      (recur (dec runs-left)
-             (conj history [(player-a history)
-                            (player-b history)])))))
+  (reduce (fn [h _] (conj h [(player-a h)
+                             (player-b h)]))
+          []
+          (range run-count)))
+
+(defn winner [entry]
+  (cond (= entry [:rock     :paper   ]) :right
+        (= entry [:paper    :paper   ]) :tie
+        (= entry [:scissors :paper   ]) :left
+        (= entry [:rock     :scissors]) :left
+        (= entry [:paper    :scissors]) :right
+        (= entry [:scissors :scissors]) :tie
+        (= entry [:rock     :rock    ]) :tie
+        (= entry [:paper    :rock    ]) :left
+        (= entry [:scissors :rock    ]) :right))
+
+(defn summarize [history]
+  (let [{:keys [left right tie] :or {left 0
+                                     right 0
+                                     tie 0}}
+        (frequencies (map winner history))
+        winner (cond (< left right) "Right"
+                     (= left right) "Tie"
+                     (> left right) "Left")]
+    (str "Winner: " winner ".   "
+         "Spead: " (- left right) ".   "
+         "Runs: " (count history) ".   "
+         "Totals: left: " left ", right: " right ", tie: " tie)))
 
 (defn rock-strategy [history] :rock)
 (defn paper-strategy [history] :paper)
 (defn random-strategy [history] (first (shuffle '(:rock :paper :scissors))))
 
-(defn winner [[left right]]
-  (cond (and (= left :paper   ) (= right :paper   )) :tie
-        (and (= left :paper   ) (= right :scissors)) :right
-        (and (= left :paper   ) (= right :rock    )) :left
-        (and (= left :scissors) (= right :paper   )) :left
-        (and (= left :scissors) (= right :scissors)) :tie
-        (and (= left :scissors) (= right :rock    )) :right
-        (and (= left :rock    ) (= right :paper   )) :right
-        (and (= left :rock    ) (= right :scissors)) :left
-        (and (= left :rock    ) (= right :rock    )) :tie))
+(defn histogram-strategy [history]
+  ; assume that we're the right strategy
+  (let [results (frequencies (map #(get % 0) history))
+        s (:scissors results 0)
+        r (:rock results 0)
+        p (:paper results 0)]
+    (cond (and (>= s p) (>= s r)) :rock
+          (and (>= p s) (>= p r)) :scissors
+          (and (>= r p) (>= r s)) :paper)))
 
-(defn summarize [history]
-  (let [{left :left right :right :as all}
-        (frequencies (map winner history))]
-    (cond (< left right) (str "Left lose: " (- left right))
-          (> left right) (str "Right lose: " (- left right))
-          (= left right) (str "Everybody lose: " (- left right)))))
-
-(time (summarize (moderate random-strategy rock-strategy 1000000)))
+(time (summarize (moderate random-strategy histogram-strategy 100)))
